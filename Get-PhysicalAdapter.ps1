@@ -5,7 +5,7 @@
    Get-PhysicalAdapter uses WMI to retrieve the Win32_networkadapter instances from one or more computers. It displays each adapter's MAC address, adapter type,
    Device ID, name and speed.
 .PARAMETER ComputerName
-The ComputerName to query. This is mandatory.
+The computer name or names to query. This is mandatory.
 .EXAMPLE
    Get-PhysicalAdapter -ComputerName localhost
 .EXAMPLE
@@ -21,7 +21,7 @@ function Get-PhysicalAdapter
                    ValueFromPipelineByPropertyName=$true,
                    Position=0)]
         [Alias('hostname')]
-        [string]$ComputerName
+        [string[]]$ComputerName
     )
 
     Begin
@@ -31,8 +31,8 @@ function Get-PhysicalAdapter
     Process
     {
         Get-WmiObject  win32_networkadapter -ComputerName $ComputerName |
-        Where-Object -FilterScript {  $_.PhysicalAdapter} |
-        Select-Object MACAddress, AdapterType, DeviceID, Name, Speed, $ComputerName
+        Where-Object -FilterScript {$_.PhysicalAdapter} |
+        Select-Object MACAddress, AdapterType, DeviceID, Name, Speed
     }
     End
     {
