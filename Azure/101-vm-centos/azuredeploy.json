@@ -22,7 +22,7 @@
     },
     "CentOSVersion": {
       "type": "string",
-      "defaultValue": "7.2",
+      "defaultValue": "6.5",
       "allowedValues": [
         "6.5",
         "6.6",
@@ -58,16 +58,7 @@
     "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
     "apiVersion": "2015-06-15"
   },
-  "resources": [
-    {
-      "type": "Microsoft.Storage/storageAccounts",
-      "name": "[variables('storageAccountName')]",
-      "apiVersion": "[variables('apiVersion')]",
-      "location": "[variables('location')]",
-      "properties": {
-        "accountType": "[variables('storageAccountType')]"
-      }
-    },
+  "resources": [  
     {
       "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Network/publicIPAddresses",
