@@ -5,14 +5,14 @@
     "adminUsername": {
       "value": "mdcentosuser"
     },
-    "adminPassword": {
-      "value": "GEN-PASSWORD"
+    "vmName": {
+      "value": "test-md-centos"
     },
     "dnsLabelPrefix": {
-      "value": "GEN-UNIQUE"
+      "value": "test-md-centos"
     },
     "CentOSVersion": {
-      "value": "7.2"
+      "value": "7.1"
     }
   }
 }
