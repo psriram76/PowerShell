@@ -6,13 +6,13 @@
       "value": "Standard_LRS"
     },
     "storageAccountName": {
-      "value": "unspecified"
+      "value": "testmattdavis"
     },
     "environmentName": {
-      "value": "unspecified"
+      "value": "Test"
     },
     "departmentName": {
-      "value": "unspecified"
+      "value": "IT"
     },
      "userName": {
          "value": "Matt Davis"
