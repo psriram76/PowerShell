@@ -6,7 +6,7 @@
       "value": "Standard_LRS"
     },
     "storageAccountName": {
-      "value": "researchMattDavis"
+      "value": "resmattdavis"
     },
     "environmentName": {
       "value": "Research"

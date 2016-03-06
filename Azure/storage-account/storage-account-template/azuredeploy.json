@@ -19,7 +19,7 @@
       "type": "string",
       "defaultValue": "unspecified",
       "metadata": {
-        "description":  "Storage Account name (no spaces, uppercase or special characters)"
+        "description":  "Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only."
       }
     },
     "environmentName": {
@@ -45,7 +45,7 @@
     }
   },
   "variables": {
-    "storageAccountName": "[concat(parameters('storageAccountName'), 'storageaccount')]",
+    "storageAccountName": "[concat(parameters('storageAccountName'), 'storeacct')]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
