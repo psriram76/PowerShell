@@ -3,16 +3,19 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "adminUsername": {
-      "value": "mdcentosuser"
+      "value": "mdwinwed1suser"
     },
     "vmName": {
-      "value": "test-md-centos-1"
+      "value": "test-md-web-1"
     },
     "dnsLabelPrefix": {
-      "value": "test-md-centos-1"
+      "value": "test-win-web-1"
     },
-    "CentOSVersion": {
-      "value": "7.1"
+    "windowsOSVersion": {
+      "value": "2012-R2-Datacenter"
+    },
+    "internalIPAddress": {
+      "value": "192.168.0.2"
     }
   }
 }

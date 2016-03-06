@@ -42,7 +42,7 @@
       }
     },
   "variables": {
-    "vmName": "test-md-centos",
+    "vmName": "[parameters('vmName')]",
     "vmSize": "Standard_A1",
     "storageAccountName": "psteststorageaccount",
     "location": "[resourceGroup().location]",
