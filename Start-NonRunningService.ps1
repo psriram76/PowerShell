@@ -1,4 +1,6 @@
 ﻿#Start a non-running service. Can be used as a scheduled task.
+#Run the following command to create a new eventlog. New-EventLog -LogName TestLog -Source TestApp
+
 $service = Get-Service -Name Bits
 
 if ($service.Status -ne "Running")
