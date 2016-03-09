@@ -17,28 +17,35 @@
     },
     "storageAccountName": {
       "type": "string",
-      "defaultValue": "devmd",
+      "defaultValue": "unspecified",
       "metadata": {
-        "description":  "Storage Account name (no spaces, uppercase or special characters)"
+        "description":  "Storage account name must be between 3 and 24 characters in length and use numbers and lower-case letters only."
       }
     },
     "environmentName": {
       "type": "string",
-      "defaultValue": "Dev",
+      "defaultValue": "unspecified",
       "metadata": {
         "description": "Environment tag"
       }
     },
     "departmentName": {
       "type": "string",
-      "defaultValue": "IT",
+      "defaultValue": "unspecified",
       "metadata": {
         "description": "Department tag"
+      }
+    },
+    "userName": {
+      "type": "string",
+      "defaultValue": "Unspecified",
+      "metadata": {
+        "description": "User tag"
       }
     }
   },
   "variables": {
-    "storageAccountName": "[concat(parameters('storageAccountName'), 'storageaccount')]",
+    "storageAccountName": "[concat(parameters('storageAccountName'), 'storeacct')]",
     "apiVersion": "2015-06-15"
   },
   "resources": [
@@ -49,7 +56,8 @@
       "location": "[resourceGroup().location]",
       "tags": {
         "Environment": "[parameters('environmentName')]",
-        "Department": "[parameters('departmentName')]"
+        "Department": "[parameters('departmentName')]",
+        "User": "[parameters('userName')]"
       },
       "properties": {
         "accountType": "[parameters('storageAccountType')]"
