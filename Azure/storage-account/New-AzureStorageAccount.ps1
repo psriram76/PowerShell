@@ -8,7 +8,7 @@ $TestTemplateParameterUri = "https://raw.githubusercontent.com/MatthewJDavis/Pow
 $DevTemplateParameterUri = "https://raw.githubusercontent.com/MatthewJDavis/PowerShell/azure-storage-accounts/Azure/storage-account/storage-account-test/storage-acct-parameters-dev.json"
 
 
-New-AzureRmResourceGroupDeployment -Name $deployname -ResourceGroupName $rgname -TemplateUri $TemplateUri -TemplateParameterUri $DevTemplateParameterUri -Verbose
+New-AzureRmResourceGroupDeployment -Name $deployname -ResourceGroupName $rgname -TemplateUri $TemplateUri -TemplateParameterUri $TestTemplateParameterUri -Verbose
 
 
 
