@@ -59,10 +59,7 @@ function Install-NewRelicServerAgent
         Start-Sleep -Seconds 20
 
         #Remove existing .NET app
-        $query = "Name LIKE 'New Relic .NET Agent (64-bit)'"
-        Invoke-Command -Session $session -ScriptBlock {$app = Get-WmiObject -Class win32_product -Filter $query}
-        Invoke-Command -Session $session -ScriptBlock {$app.uninstall()}
-        Start-Sleep -Seconds 10
+        Uninstall-NewRelicServerAgent -Session $session
         
         #Install updated NewRelic Agent
         Invoke-Command -Session $session -ScriptBlock {msiexec.exe /i C:\$Using:Path\$Using:FileName /L*v install.log /qn NR_LICENSE_KEY=0fd3769cff89b798e56175b463e25b6865289852 INSTALLLEVEL=1}
