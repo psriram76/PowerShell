@@ -1,38 +1,33 @@
 ﻿<#
 .Synopsis
-   Short description
+   Start the New Relic Server Agent Service
 .DESCRIPTION
-   Long description
+   Starts the New Relic Server Agent Service on a target computer(s)
 .EXAMPLE
-   Example of how to use this cmdlet
+   Start-NewRelicServerAgentService -ComputerName 'localhost'
+   Starts the NewRelicServerAgentService on the local computer
 .EXAMPLE
-   Another example of how to use this cmdlet
+   Start-NewRelicServerAgentService -ComputerName 'server1','server2'
+   Starts the NewRelicServerAgentService on the computers call server1 and server2
 #>
 function Start-NewRelicServerAgentService
 {
     [CmdletBinding()]
-    [Alias()]
-    [OutputType([int])]
     Param
     (
         # Param1 help description
         [Parameter(Mandatory=$true,
                    ValueFromPipelineByPropertyName=$true,
                    Position=0)]
-        $Param1,
-
-        # Param2 help description
-        [int]
-        $Param2
+        [String[]]           
+        $ComputerName
     )
 
-    Begin
-    {
-    }
     Process
     {
-    }
-    End
-    {
-    }
+      foreach ($computer in $ComputerName)
+      {
+          Get-Service -Name nrsrvmon -ComputerName $computer | Start-Service 
+      }
+    }#process
 }

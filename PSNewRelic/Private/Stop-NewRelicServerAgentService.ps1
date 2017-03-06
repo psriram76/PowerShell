@@ -1,34 +1,33 @@
 ﻿<#
 .Synopsis
-   Short description
+   Stops the New Relic Server Agent Service
 .DESCRIPTION
    Long description
 .EXAMPLE
-   Example of how to use this cmdlet
+   Stop-NewRelicServerAgentService -ComputerName 'localhost'
+   Stops the NewRelicServerAgentService on the local computer
 .EXAMPLE
-   Another example of how to use this cmdlet
+   Stop-NewRelicServerAgentService -ComputerName 'server1','server2'
+   Stops the NewRelicServerAgentService on the computers call server1 and server2
 #>
 function Stop-NewRelicServerAgentService
 {
     [CmdletBinding()]
-    [Alias()]
-    [OutputType([int])]
     Param
     (
         # Param1 help description
         [Parameter(Mandatory=$true,
                    ValueFromPipelineByPropertyName=$true,
                    Position=0)]
-        $Param1
+        [String[]]           
+        $ComputerName
     )
 
-    Begin
-    {
-    }
     Process
     {
-    }
-    End
-    {
-    }
+      foreach ($computer in $ComputerName)
+      {
+        Get-Service -Name nrsrvmon -ComputerName $computer | Stop-Service -Force
+      }
+    }#process
 }
