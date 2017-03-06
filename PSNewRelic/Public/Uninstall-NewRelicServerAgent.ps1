@@ -25,12 +25,13 @@ function Uninstall-NewRelicServerAgent
     }
     Process
     {
-        $query = "Name LIKE 'New Relic .NET Agent (64-bit)'"
-        Invoke-Command -Session $session -ScriptBlock {$app = Get-WmiObject -Class win32_product -Filter $query}
-       # Invoke-Command -Session $session -ScriptBlock {$app.uninstall()}
+        Invoke-Command -Session $session -ScriptBlock {$app = Get-WmiObject -Query "select * from win32_product where Name LIKE 'NEW Relic Server Monitor'"}
+        Invoke-Command -Session $session -ScriptBlock {$app.uninstall()}
         Start-Sleep -Seconds 10
     }#process
     End
     {
     }
 }
+
+

@@ -8,7 +8,7 @@
 .EXAMPLE
    Another example of how to use this cmdlet
 #>
-function Install-NewRelicServerAgent
+function Start-NewRelicServerAgentService
 {
     [CmdletBinding()]
     [Alias()]
@@ -19,9 +19,11 @@ function Install-NewRelicServerAgent
         [Parameter(Mandatory=$true,
                    ValueFromPipelineByPropertyName=$true,
                    Position=0)]
-        [String[]]
-        $ComputerName
+        $Param1,
 
+        # Param2 help description
+        [int]
+        $Param2
     )
 
     Begin
@@ -29,7 +31,6 @@ function Install-NewRelicServerAgent
     }
     Process
     {
-      #install code
     }
     End
     {
