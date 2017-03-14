@@ -1,4 +1,17 @@
-﻿function Update-Sysinternals {
+﻿<#
+.Synopsis
+   Download the latest sysinternals tools
+.DESCRIPTION
+   Downloads the latest sysinternals tools from https://live.sysinternals.com/ to a specified directory
+   The function downloads all .exe and .chm files available
+.EXAMPLE
+   Update-Sysinternals -Path C:\sysinternals
+   Downloads the sysinternals tools to the directory C:\sysinternals
+.EXAMPLE
+   Update-Sysinternals -Path C:\Users\Matt\OneDrive\Tools\sysinternals>
+   Downloads the sysinternals tools to a user's OneDrive
+#>
+function Update-Sysinternals {
     [CmdletBinding()]
     param (
         # Path to the directory were sysinternals tools will be downloaded to 
