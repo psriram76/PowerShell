@@ -8,7 +8,7 @@
    Update-Sysinternals -Path C:\sysinternals
    Downloads the sysinternals tools to the directory C:\sysinternals
 .EXAMPLE
-   Update-Sysinternals -Path C:\Users\Matt\OneDrive\Tools\sysinternals>
+   Update-Sysinternals -Path C:\Users\Matt\OneDrive\Tools\sysinternals
    Downloads the sysinternals tools to a user's OneDrive
 #>
 function Update-Sysinternals {
@@ -16,6 +16,13 @@ function Update-Sysinternals {
     param (
         # Path to the directory were sysinternals tools will be downloaded to 
         [Parameter(Mandatory=$true)]
+        [ValidateScript({
+            if (-not (Test-Path -Path $_)){
+            Throw "The Path $_ does not exist"
+        } else {
+            $true
+        }
+        })]
         [string]
         $Path 
     )
@@ -23,13 +30,12 @@ function Update-Sysinternals {
     begin {
             $uri = 'https://live.sysinternals.com/'
             $sysToolsPage = Invoke-WebRequest -Uri $uri
-            # create dir if it doesn't exist    
-            if (-not (Test-Path -Path $Path)){
-                New-Item -Path $Path -ItemType Directory
-            }
+            
     }
     
     process {
+        # create dir if it doesn't exist    
+       
         Set-Location -Path $Path
 
         $sysTools = $sysToolsPage.Links.innerHTML | Where-Object -FilterScript {$_ -like "*.exe" -or $_ -like "*.chm"} 
