@@ -8,7 +8,7 @@
 .EXAMPLE
    Another example of how to use this cmdlet
 #>
-function Verb-Noun
+function Set-TMServiceLogon
 {
     [CmdletBinding()]
     Param
@@ -34,7 +34,7 @@ function Verb-Noun
     }
     Process
     {
-        Invoke-CimMethod -Query "SELECT * FROM win32_service WHERE name = $ServiceName" -MethodName change -Arguments
+        Invoke-CimMethod -Query "SELECT * FROM win32_service WHERE name = 'Bits'" -MethodName change -Arguments @{"StartName" = $NewUser; "StartPassword" = $NewPassword} -ComputerName $env:COMPUTERNAME
     }
     End
     {
