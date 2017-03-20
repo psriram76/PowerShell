@@ -34,7 +34,10 @@ function Set-TMServiceLogon
     }
     Process
     {
-        Invoke-CimMethod -Query "SELECT * FROM win32_service WHERE name = 'Bits'" -MethodName change -Arguments @{"StartName" = $NewUser; "StartPassword" = $NewPassword} -ComputerName $env:COMPUTERNAME
+        Invoke-CimMethod -Query "SELECT * FROM win32_service WHERE name = 'Bits'" 
+        -MethodName change 
+        -Arguments @{"StartName" = $NewUser; "StartPassword" = $NewPassword} 
+        -ComputerName $env:COMPUTERNAME
     }
     End
     {
