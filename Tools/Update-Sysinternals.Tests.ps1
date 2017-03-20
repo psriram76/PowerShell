@@ -8,7 +8,7 @@ Describe 'Update-Sysinternals'{
             Mock Test-Path {
                 $false
             }
-            Update-Sysinternals -Path 'C:\nonsense' | Should throw "Cannot validate argument on parameter 'Path'. The Path C:\nonsense does not exist"
+            Update-Sysinternals -Path 'c:\jklfj' | Should Throw 
         }
     }
     Context 'Execution'{

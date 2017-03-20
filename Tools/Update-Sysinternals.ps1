@@ -15,19 +15,18 @@ function Update-Sysinternals {
     [CmdletBinding()]
     param (
         # Path to the directory were sysinternals tools will be downloaded to 
-        [Parameter(Mandatory=$true)]
-        [ValidateScript({
-            if (-not (Test-Path -Path $_)){
-            Throw "The Path $_ does not exist"
-        } else {
-            $true
-        }
-        })]
+        [Parameter(Mandatory=$true)]      
         [string]
         $Path 
     )
     
     begin {
+            if (-not (Test-Path -Path $Path)){
+            Throw "The Path $_ does not exist"
+        } else {
+            $true
+        }
+        
             $uri = 'https://live.sysinternals.com/'
             $sysToolsPage = Invoke-WebRequest -Uri $uri
             
