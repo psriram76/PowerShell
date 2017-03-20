@@ -26,6 +26,7 @@ function Get-TMMachineInfo {
         $session | Remove-CimSession
 
         # output data
-        $os | Select-Object -Property @{n='ComputerName';e={$computer}}, 29 Version,ServicePackMajorVersion
+        $os | Select-Object -Property @{n='ComputerName';e={$computer}},
+                                        Version,ServicePackMajorVersion
     }#foreach
 }#function
