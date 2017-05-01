@@ -1,7 +1,6 @@
-cd C:\
+Set-Location -Path C:\
 Get-Date
 Import-Module azureext
-function pro {notepad $profile.CurrentUserAllHosts}
 
 function prompt 
            {
