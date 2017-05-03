@@ -1,11 +1,36 @@
-Set-Location -Path C:\
-Get-Date
+$majorVersion = $Host.Version.Major.ToString()
+$minorVersion = $Host.Version.Minor.ToString()
+$version = "$majorVersion.$minorVersion"
+
+#module Imports
 Import-Module azureext
+Import-Module AWSPowerShell
 
-function prompt 
-           {
-              "PS " + $env:username + "~" + (Get-Date -format t) + " " + (get-location) + "> "
-           }
-
+#aliases
 New-Alias -Name sub -Value Select-AzureRmSubscription
 New-Alias -Name add -Value Add-AzureRmAccount
+
+Set-Location -Path C:\git
+Write-Output "You are using PowerShell" version $version 
+Get-Date
+
+function Prompt {
+    $location = Get-Location
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
+
+    if (condit$principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")ion) {
+         $Host.UI.RawUI.WindowTitle = "[ADMIN]: " + $location
+    } else {
+        $Host.UI.RawUI.WindowTitle = $location
+    }
+    "PS " + $env:username + "~" + (Get-Date -format t) + " " + "> "
+}#prompt
+
+
+			
+
+              
+
+
+
