@@ -24,7 +24,7 @@ function Prompt {
     } else {
         $Host.UI.RawUI.WindowTitle = $location
     }
-    "PS " + $env:username + "~" + (Get-Date -format t) + " " + "> "
+    "PS " + $env:username + "~" + (Get-Date -format t) + "> "
 }#prompt
 
 
