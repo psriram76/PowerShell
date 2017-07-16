@@ -11,7 +11,7 @@ New-Alias -Name sub -Value Select-AzureRmSubscription
 New-Alias -Name add -Value Add-AzureRmAccount
 
 Set-Location -Path C:\git
-Write-Output "You are using PowerShell" version $version 
+Write-Output "PowerShell version" $version 
 Get-Date
 
 function Prompt {
@@ -19,7 +19,7 @@ function Prompt {
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
     $principal = [Security.Principal.WindowsPrincipal] $identity
 
-    if (condit$principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")ion) {
+    if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
          $Host.UI.RawUI.WindowTitle = "[ADMIN]: " + $location
     } else {
         $Host.UI.RawUI.WindowTitle = $location
