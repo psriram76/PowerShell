@@ -14,6 +14,8 @@ Set-Location -Path C:\git
 Write-Output "PowerShell version" $version 
 Get-Date
 
+Set-PSReadlineKeyHandler -Key Tab -Function Complete
+
 function Prompt {
     $location = Get-Location
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
@@ -24,7 +26,12 @@ function Prompt {
     } else {
         $Host.UI.RawUI.WindowTitle = $location
     }
-    "PS " + $env:username + "~" + (Get-Date -format t) + "> "
+
+    if ($env:ConEmuANSI -eq "ON") {
+    	"PS >"
+    } else {
+        "PS " + $env:username + " ~ " + (Get-Date -format t) + "> " 
+    }
 }#prompt
 
 
