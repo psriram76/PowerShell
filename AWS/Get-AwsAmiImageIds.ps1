@@ -7,31 +7,33 @@
 .EXAMPLE
   PS C:\> Get-AWSAmiImageIDs -Region eu-west-1
 
-  ImageName                                                       AmiID        Region
-  ---------                                                       -----        ------
-  Windows_Server-2016-English-Full-Base-2018.05.09                ami-894c7bf0 eu-west-1
-  Windows_Server-2016-English-Nano-Base-2018.04.11                ami-310e2848 eu-west-1
-  Windows_Server-2016-English-Core-Base-2018.05.09                ami-ebcafe92 eu-west-1
-  Windows_Server-2016-English-Full-Containers-2018.05.09          ami-8d4c7bf4 eu-west-1
-  Windows_Server-2016-English-Full-SQL_2016_Enterprise-2017.11.29 ami-a63e83df eu-west-1
-  Windows_Server-2016-English-Full-SQL_2016_Standard-2017.11.29   ami-cf3c81b6 eu-west-1
-  Windows_Server-2016-English-Full-SQL_2016_Web-2017.11.29        ami-dd3d80a4 eu-west-1
-  Windows_Server-2016-English-Full-SQL_2016_Express-2017.11.29    ami-ab3e83d2 eu-west-1
+  ImageName    : Windows_Server-2016-English-Full-Base-2018.05.09
+  AmiID        : ami-894c7bf0
+  CreationDate : 2018-05-09T19:33:56.000Z
+  Region       : eu-west-1
+  DESCRIPTION  : Microsoft Windows Server 2016 with Desktop Experience Locale English AMI provided by Amazon
+
+  ImageName    : Windows_Server-2016-English-Nano-Base-2018.04.11
+  AmiID        : ami-310e2848
+  CreationDate : 2018-04-17T00:08:36.000Z
+  Region       : eu-west-1
+  DESCRIPTION  : Microsoft Windows Server 2016 Nano Locale English AMI provided by Amazon
 
   Returns the latest ImageName, AmiID and Region for Windows Server 2016 in eu-west-1 region
 .EXAMPLE
   PS C:\> Get-AWSAmiImageIDs -Region us-east-1 -WindowsVersion 2012R2
 
-  ImageName                                                                 AmiID        Region
-  ---------                                                                 -----        ------
-  Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.05.09                  ami-2a9a1655 us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-Core-2018.05.09                  ami-09800c76 us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Express-2017.11.29      ami-a40699de us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Standard-2017.11.29     ami-1c029d66 us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2016_Web-2017.11.29          ami-7b059a01 us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Express-2017.11.29  ami-3007984a us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Standard-2017.11.29 ami-a8039cd2 us-east-1
-  Windows_Server-2012-R2_RTM-English-64Bit-SQL_2014_SP1_Web-2017.11.29      ami-38049b42 us-east-1
+  ImageName    : Windows_Server-2012-R2_RTM-English-64Bit-Base-2018.05.09
+  AmiID        : ami-2a9a1655
+  CreationDate : 2018-05-09T10:11:49.000Z
+  Region       : us-east-1
+  DESCRIPTION  : Microsoft Windows Server 2012 R2 RTM 64-bit Locale English AMI provided by Amazon
+
+  ImageName    : Windows_Server-2012-R2_RTM-English-64Bit-Core-2018.05.09
+  AmiID        : ami-09800c76
+  CreationDate : 2018-05-09T09:34:18.000Z
+  Region       : us-east-1
+  DESCRIPTION  : Microsoft Windows Server 2012 R2 RTM 64-bit Locale English Core AMI provided by Amazon
 
   Returns the latest ImageName, AmiID and Region for Windows Server 2012R2 in us-east-1 region
 #>
@@ -67,7 +69,9 @@ function Get-AWSAmiImageIDs {
         $ec2Image = New-Object -TypeName psobject
         $ec2Image | Add-Member -MemberType NoteProperty -Name ImageName -Value $imageDetails.name 
         $ec2Image | Add-Member -MemberType NoteProperty -Name AmiID -Value $imageDetails.imageid 
+        $ec2Image | Add-Member -MemberType NoteProperty -Name CreationDate -Value $imageDetails.CreationDate
         $ec2Image | Add-Member -MemberType NoteProperty -Name Region -Value $Region
+        $ec2Image | Add-Member -MemberType NoteProperty -Name DESCRIPTION -Value $imageDetails.Description
 
         $ec2Images += $ec2Image
       }
