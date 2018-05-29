@@ -1,5 +1,15 @@
 <#
+Get the usage of TeamCity agent licences throughout the day
+Output a custom object with data retrieved from the TeamCity API
 
+Auth code from = https://virtuallysober.com/2018/01/04/introduction-to-powershell-rest-api-authentication/
+TeamCity API docs = https://confluence.jetbrains.com/display/TCD10/REST+API
+
+User has to be an admin to get server licence data
+Need to investigate secure way to auth to server
+
+Matthew Davis
+2018-05-28
 #>
 
 $baseUrl = 'http://51.143.152.188:8111/app/rest/'
