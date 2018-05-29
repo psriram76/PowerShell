@@ -6,7 +6,7 @@ Auth code from = https://virtuallysober.com/2018/01/04/introduction-to-powershel
 TeamCity API docs = https://confluence.jetbrains.com/display/TCD10/REST+API
 
 User has to be an admin to get server licence data
-Need to investigate secure way to auth to server
+Need to investigate secure way to auth to server and getting session id to save auth
 
 Matthew Davis
 2018-05-28
