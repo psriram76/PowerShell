@@ -21,7 +21,7 @@ function Get-TCBuilds {
     
     process {
         $pair = "$($UserName):$($Password)"
-        $url = 'http://IPAddress:8111/app/rest/builds'
+        $url = 'http://ipaddress:8111/app/rest/builds'
 
         $encodedCreds = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes($pair))
         $basicAuthValue = "Basic $encodedCreds"
@@ -42,7 +42,7 @@ function Get-TCBuilds {
             Write-Output -InputObject $resp.builds.build.id[$i]
             $i ++
         }
-
+                
         Write-Output $resp
     }
     
