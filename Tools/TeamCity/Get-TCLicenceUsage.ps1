@@ -6,7 +6,6 @@ Auth code from = https://virtuallysober.com/2018/01/04/introduction-to-powershel
 TeamCity API docs = https://confluence.jetbrains.com/display/TCD10/REST+API
 
 User has to be an admin to get server licence data
-Need to investigate secure way to auth to server and getting session id to save auth
 
 Matthew Davis
 2018-05-28
@@ -42,27 +41,39 @@ $licenceStats = [PSCustomObject]@{
   Time = Get-Date -Format HH:mm
 }
 
+# Connect to server to create a session
+try {
+  $server = "$baseUrl" + "server"
+  Invoke-RestMethod -Method Get -UseBasicParsing -Uri $server -Headers $headers -SessionVariable session | Out-Null
+}
+catch [System.Net.WebException] {
+  Write-Output $_.exception.message
+}
+
+
 # Overall licence data
 $licenceDataUrl = $baseUrl + 'server/licensingData'
-[xml]$licenceData =   Invoke-RestMethod -Method Get -UseBasicParsing -Uri $licenceDataUrl -Headers $headers
+[xml]$licenceData =   Invoke-RestMethod -Method Get -UseBasicParsing -Uri $licenceDataUrl -WebSession $session
 $licenceStats.MaxAgents = $licenceData.licensingData.maxAgents
 $licenceStats.AgentsLeft = $licenceData.licensingData.agentsLeft
 
 # Count total authorised agents
 $agentUrl = $baseUrl + 'agents?locator=authorized:true'
-[xml]$authorisedAgents = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $agentUrl -Headers $headers
+[xml]$authorisedAgents = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $agentUrl -WebSession $session
 $licenceStats.AuthAgentCount = $authorisedAgents.agents.count
 
 # Authorised agents that are connected
 $connectedLocator = $agentUrl + ',connected:true'
-[xml]$authAgentConnected = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $connectedLocator -Headers $headers
+[xml]$authAgentConnected = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $connectedLocator -WebSession $session
 $licenceStats.AuthConnectedAgentCount = $authAgentConnected.agents.count
 
 # Authorised agents that are disconnected
 $disconnectedLocator = $agentUrl + ',connected:false'
-[xml]$authAgentsDisconnected = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $disconnectedLocator -Headers $headers
+[xml]$authAgentsDisconnected = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $disconnectedLocator -WebSession $session
 $licenceStats.AuthDisconnectedAgentCount = $authAgentsDisconnected.agents.count
 
-Return $licenceStats
+Remove-Variable session
 
-Export-Csv -InputObject $licenceStats -Path 'C:\#temp\test.csv' -Force -NoTypeInformation -Append
+Export-Csv -Path C:\TEMP\licence-stats.csv -InputObject $licenceStats -NoTypeInformation -Append -Force
+
+Return $licenceStats
