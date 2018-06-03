@@ -10,10 +10,16 @@ Import-Module AWSPowerShell
 New-Alias -Name sub -Value Select-AzureRmSubscription
 New-Alias -Name add -Value Add-AzureRmAccount
 
+# add alias to find accelerators
+$TAType = [psobject].Assembly.GetType("System.Management.Automation.TypeAccelerators")
+$TAType::Add('accelerators',$TAType) 
+# [accelerators]::Get
+
 Set-Location -Path C:\git
 Write-Output "PowerShell version" $version 
 Get-Date
 
+$Host.PrivateData.ErrorForegroundColor = 'Cyan'
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
 
 function Prompt {
@@ -30,7 +36,7 @@ function Prompt {
     if ($env:ConEmuANSI -eq "ON") {
     	"PS >"
     } else {
-        "PS " + $env:username + " ~ " + (Get-Date -format t) + "> " 
+        $env:username + " :: " + (Get-Date -format t) + "> " 
     }
 }#prompt
 
