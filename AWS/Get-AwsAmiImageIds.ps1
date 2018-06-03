@@ -41,8 +41,8 @@ function Get-AWSAmiImageIDs {
   [CmdletBinding()]
   #AWS Regions
   param (
-    [ValidateSet("ap-northeast-1","ap-northeast-2","ap-south-1","ap-southeast-1","ap-southeast-2",
-    "ca-central-1","eu-central-1","eu-west-1","eu-west-2","sa-east-1","us-east-1","us-east-2","us-west-1","us-west-2")]
+    [ValidateSet("ap-northeast-1", "ap-northeast-2", "ap-south-1", "ap-southeast-1", "ap-southeast-2",
+      "ca-central-1", "eu-central-1", "eu-west-1", "eu-west-2", "sa-east-1", "us-east-1", "us-east-2", "us-west-1", "us-west-2")]
     [string]
     $Region = "eu-west-1",
 
@@ -50,7 +50,7 @@ function Get-AWSAmiImageIDs {
     [ValidateSet('2016', '2012R2', '2012', '2008R2')]
     [string]
     $WindowsVersion = '2016'
-    )
+  )
 
   begin {
     Set-DefaultAWSRegion -Region $Region
@@ -61,9 +61,9 @@ function Get-AWSAmiImageIDs {
 
   process {
     try {
-        $images = Get-EC2ImageByName | Where-Object {$_ -like "WINDOWS_$WindowsVersion*"} 
+      $images = Get-EC2ImageByName | Where-Object {$_ -like "WINDOWS_$WindowsVersion*"} 
 
-        foreach($image in $images){
+      foreach ($image in $images) {
         $imageDetails = Get-EC2ImageByName -Name $image
 
         $ec2Image = New-Object -TypeName psobject
