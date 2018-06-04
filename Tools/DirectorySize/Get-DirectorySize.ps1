@@ -3,14 +3,19 @@
 Displays the amount of MBs used for each subdirectory for a given directory
 .EXAMPLE
 Get-DirectorySize -Path 'C:\Program Files'
+.Example
+Get-DirectorySize -Path 'C:\Windows' -IncludePathFiles
 #>
 function Get-DirectorySize {
   [CmdletBinding()]
-  # Enter the Path of the directory to find the size
+  # Path of the directory to find the size
   param(
     [Parameter(Mandatory)]
     [string]
-    $Path
+    $Path,
+    # Include files at the parent path level in the output
+    [switch] 
+    $IncludePathFiles
 
   )
   
@@ -22,14 +27,19 @@ function Get-DirectorySize {
       Throw "The Path $Path does not exist"
     }
     
-    $SubDirectoryList = Get-ChildItem -Path $Path -Directory
+    if ($IncludePathFiles) {
+      $SubDirectoryList = Get-ChildItem -Path $Path      
+    }
+    else {
+      $SubDirectoryList = Get-ChildItem -Path $Path -Directory      
+    }
     $directoryInfoList = @()
 
     foreach ($directory in $SubDirectoryList) {
       $directoryInfo = [PSCustomObject]@{
-        Name      = $null;
-        Items     = 0;
-        Size = 0;
+        Name  = $null;
+        Items = 0;
+        Size  = 0;
       }
 
       $subDirectory = Get-ChildItem -Path (Join-Path -Path $ParentDirectory -ChildPath $directory.Name) -Recurse
