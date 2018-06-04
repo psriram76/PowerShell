@@ -7,6 +7,6 @@ Describe 'Get-DirectorySize' {
     Mock Test-Path {
       $false
     }
-    Get-DirectorySize -Path 'c:\non-existant' | Should Throw
+    { Get-DirectorySize -Path 'c:\non-existant'}  | Should -Throw  "The Path c:\non-existant does not exist"
   }
 }
