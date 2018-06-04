@@ -39,7 +39,7 @@ function Get-DirectorySize {
   
     }
 
-    Write-Output $directoryInfoList
+    Return $directoryInfoList
   }
   
   end {
