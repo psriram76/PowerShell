@@ -2,10 +2,11 @@
 .DESCRIPTION
 Displays the amount of MBs used for each subdirectory for a given directory
 .EXAMPLE
+Get-DirectorySize -Path 'C:\Program Files'
 #>
 function Get-DirectorySize {
   [CmdletBinding()]
-  # Parameter help description
+  # Enter the Path of the directory to find the size
   param(
     [Parameter(Mandatory)]
     [string]
