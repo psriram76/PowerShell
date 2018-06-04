@@ -1,6 +1,6 @@
 <#
 .DESCRIPTION
-Displays the amount of MBs used for each subdirectory for a given directory
+Displays the amount of bytes used for each subdirectory for a given directory
 .EXAMPLE
 Get-DirectorySize -Path 'C:\Program Files'
 .Example
@@ -8,7 +8,7 @@ Get-DirectorySize -Path 'C:\Windows' -IncludePathFiles
 #>
 function Get-DirectorySize {
   [CmdletBinding()]
-  # Path of the directory to find the size
+  # Path of the directory to find the size of the subdirectories
   param(
     [Parameter(Mandatory)]
     [string]
@@ -43,7 +43,7 @@ function Get-DirectorySize {
       }
 
       $subDirectory = Get-ChildItem -Path (Join-Path -Path $ParentDirectory -ChildPath $directory.Name) -Recurse
-      $length = $subDirectory | ForEach-Object {$_.Length} | Measure-Object -Sum | Select-Object -Property @{l = "sum"; e = {"$($_.Sum)" / 1MB -as [int]}}
+      $length = $subDirectory | ForEach-Object {$_.Length} | Measure-Object -Sum | Select-Object -Property Sum
 
       $directoryInfo.Name = $directory.Name
       $directoryInfo.Items = $subDirectory.Count
