@@ -17,6 +17,9 @@ function Get-DirectorySize {
   }
   
   process {
+    if (-not (Test-Path -Path $Path)) {
+      Throw "The Path $Path does not exist"
+    }
     
     $SubDirectoryList = Get-ChildItem -Path $Path -Directory
     $directoryInfoList = @()
@@ -24,16 +27,16 @@ function Get-DirectorySize {
     foreach ($directory in $SubDirectoryList) {
       $directoryInfo = [PSCustomObject]@{
         Name      = $null;
-        Count     = 0;
-        TotalSize = 0;
+        Items     = 0;
+        Size = 0;
       }
 
       $subDirectory = Get-ChildItem -Path (Join-Path -Path $ParentDirectory -ChildPath $directory.Name) -Recurse
       $length = $subDirectory | ForEach-Object {$_.Length} | Measure-Object -Sum | Select-Object -Property @{l = "sum"; e = {"$($_.Sum)" / 1MB -as [int]}}
 
       $directoryInfo.Name = $directory.Name
-      $directoryInfo.Count = $subDirectory.Count
-      $directoryInfo.TotalSize = $length.sum
+      $directoryInfo.Items = $subDirectory.Count
+      $directoryInfo.Size = $length.sum
   
       $directoryInfoList += $directoryInfo
   
