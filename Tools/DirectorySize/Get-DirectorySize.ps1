@@ -34,13 +34,14 @@ function Get-DirectorySize {
       $SubDirectoryList = Get-ChildItem -Path $Path -Directory      
     }
     $directoryInfoList = @()
+    $date = Get-Date -Format yyyy-MM-dd
 
     foreach ($directory in $SubDirectoryList) {
       # custom object to save the directory information
       $directoryInfo = [PSCustomObject]@{
         Name  = $null;
-        Items = 0;
-        Size  = 0;
+        Size = 0;
+        Date = $date
       }
 
       # Save all child items of the directory passed to the loop
@@ -50,8 +51,8 @@ function Get-DirectorySize {
 
       # Add properties to the custom object
       $directoryInfo.Name = $directory.Name
-      $directoryInfo.Items = $subDirectory.Count
       $directoryInfo.Size = $length.sum
+      $directoryInfo.Date = $
   
       # Add the ojbect to the array
       $directoryInfoList += $directoryInfo
