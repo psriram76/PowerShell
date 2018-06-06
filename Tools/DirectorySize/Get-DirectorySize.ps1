@@ -52,7 +52,6 @@ function Get-DirectorySize {
       # Add properties to the custom object
       $directoryInfo.Name = $directory.Name
       $directoryInfo.Size = $length.sum
-      $directoryInfo.Date = $
   
       # Add the ojbect to the array
       $directoryInfoList += $directoryInfo
