@@ -23,15 +23,15 @@ function Get-DirectorySize {
   }
   
   process {
-    if (-not (Test-Path -Path $Path)) {
+    if (-not (Test-Path -LiteralPath $Path)) {
       Throw "The Path $Path does not exist"
     }
     
     if ($IncludePathFiles) {
-      $SubDirectoryList = Get-ChildItem -Path $Path      
+      $SubDirectoryList = Get-ChildItem -LiteralPath $Path      
     }
     else {
-      $SubDirectoryList = Get-ChildItem -Path $Path -Directory      
+      $SubDirectoryList = Get-ChildItem -LiteralPath $Path -Directory  
     }
     $directoryInfoList = @()
     $date = Get-Date -Format yyyy-MM-dd
@@ -45,7 +45,7 @@ function Get-DirectorySize {
       }
 
       # Save all child items of the directory passed to the loop
-      $subDirectory = Get-ChildItem -Path (Join-Path -Path $ParentDirectory -ChildPath $directory.Name) -Recurse
+      $subDirectory = Get-ChildItem -Path (Join-Path -Path $Path -ChildPath $directory.Name) -Recurse
       # Get the sum of all of the childitems length in the subdirectory to find total bytes used
       $length = $subDirectory | ForEach-Object {$_.Length} | Measure-Object -Sum | Select-Object -Property Sum
 
