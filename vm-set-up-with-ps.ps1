@@ -9,7 +9,8 @@ choco install sysinternals -y
 choco install vscode -y
 choco install googlechrome -y
 choco install cmder -y
+choco install git -y
 
-code --install-extension ms-vscode.PowerShell
-code --install-extenson msazurermtools.azurerm-vscode-tools
+# code --install-extension ms-vscode.PowerShell
+# code --install-extenson msazurermtools.azurerm-vscode-tools
 
