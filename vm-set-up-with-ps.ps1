@@ -13,4 +13,5 @@ choco install git -y
 
 # code --install-extension ms-vscode.PowerShell
 # code --install-extenson msazurermtools.azurerm-vscode-tools
+# code --install-extenson eridem.vscode-nupkg
 
