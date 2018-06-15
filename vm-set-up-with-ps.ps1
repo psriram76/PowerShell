@@ -7,7 +7,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 #Install choco packages
 choco install sysinternals -y
 choco install vscode -y
-choco install chrome -y
+choco install googlechrome -y
 choco install cmder -y
 
 code --install-extension ms-vscode.PowerShell
