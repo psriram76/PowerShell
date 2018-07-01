@@ -1,8 +1,8 @@
 <#
 .SYNOPSIS
-  Authenticate to TeamCity and create a session
+  Authenticate to TeamCity and return a response and session
 .DESCRIPTION
-  Authenticate to TeamCity and return the web session authentication that can be used with other calls to the TeamCity server
+  Authenticate to TeamCity and return the response from the server and web session authentication that can be used with other calls to the TeamCity server
 .EXAMPLE
   $uri = ' https://ci.example.com'
   $session = New-TCSession -User 'tcuser' -Uri $uri
@@ -44,13 +44,17 @@ function New-TCSession {
       "Content-Type"  = "application/xml";
     }
 
+    # Trim the trailing / if it's passed with the uri parameter
+    $Uri = $Uri.TrimEnd('/')
+
     # Connect to server to create a session
     try {
       $server = "$Uri" + "/app/rest/server"
       $session = $null
       $response = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $server -Headers $headers -SessionVariable session
       New-Object psobject -Property @{
-        session = $session
+        'response' = $response
+        'session'  = $session
       }
 
     }
