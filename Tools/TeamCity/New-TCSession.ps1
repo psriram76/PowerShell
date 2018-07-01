@@ -1,4 +1,17 @@
 <#
+.SYNOPSIS
+  Authenticate to TeamCity and create a session
+.DESCRIPTION
+  Authenticate to TeamCity and return the web session authentication that can be used with other calls to the TeamCity server
+.EXAMPLE
+  $uri = ' https://ci.example.com'
+  $session = New-TCSession -User 'tcuser' -Uri $uri
+  Password for user tcuser: ********
+  Invoke-WebRequest -Uri $uri -WebSession $session.session 
+.PARAMETER Credential
+  Enter the username and password to authenticate to the TeamCity server
+.PARAMETER Uri
+  Enter the URL or IP address of the TeamCity server (supply the port if on a custom port)
 #>
 function New-TCSession {
   [CmdletBinding()]
