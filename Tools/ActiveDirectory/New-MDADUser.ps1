@@ -15,7 +15,7 @@ $securePassword = ConvertTo-SecureString $password -AsPlainText -Force
 
 
 $params = @{
-    'Name' = $dispalyName;
+    'Name' = $displayName;
     'GivenName' = $name;
     'surname' = $surname;
     'DisplayName' = $displayName;
