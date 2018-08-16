@@ -52,7 +52,7 @@ function New-TCSession {
       $server = "$Uri" + "/app/rest/server"
       $session = $null
       $response = Invoke-RestMethod -Method Get -UseBasicParsing -Uri $server -Headers $headers -SessionVariable session
-      New-Object psobject -Property @{
+      New-Object -TypeName psobject -Property @{
         'response' = $response
         'session'  = $session
       }
