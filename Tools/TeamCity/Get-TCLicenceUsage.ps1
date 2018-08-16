@@ -30,7 +30,7 @@ $headers = @{
     "Content-Type" = "application/xml";
 }
 
-# Custom object to hold the data
+# Custom object to hold the data of the licences
 $licenceStats = [PSCustomObject]@{
   MaxAgents = $null;
   AgentsLeft = $null;
