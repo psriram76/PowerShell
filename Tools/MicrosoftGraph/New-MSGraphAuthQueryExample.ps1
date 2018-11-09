@@ -10,8 +10,11 @@
 $tenantID = '' # (Get-AzureRmTenant).Id
 $ApplicationClientID = '' # Get-AzureRmADApplication | Select-Object DisplayName, ApplicationID
 $ClientSecret = '' # Only available once under Settings - Keys blade of the app
+
+# Required URLs,  
 $graphUrl = 'https://graph.microsoft.com'
 $tokenEndpoint = "https://login.microsoftonline.com/$tenantID/oauth2/token"
+$userQueryUrl = $graphUrl + "/v1.0/users"
 
 # Create the headers and body so we can get the access token to query the graph
 $tokenHeaders = @{
@@ -33,8 +36,6 @@ $getHeaders = @{
   "Authorization" = "Bearer $($tokenResponse.access_token)"
 }
 
-$queryUrl = $graphUrl + "/v1.0/users"
-
-$users = Invoke-RestMethod -Method Get -Uri $queryUrl -Headers $getHeaders
+$users = Invoke-RestMethod -Method Get -Uri $userQueryUrl -Headers $getHeaders
 
 Write-Output $users.value.displayName
