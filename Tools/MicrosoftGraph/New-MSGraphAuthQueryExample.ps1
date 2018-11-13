@@ -36,6 +36,6 @@ $queryHeaders = @{
   "Authorization" = "Bearer $($tokenResponse.access_token)"
 }
 
-$users = Invoke-RestMethod -Method Get -Uri $userQueryUrl -Headers $queryHeaders
+$userList = Invoke-RestMethod -Method Get -Uri $userQueryUrl -Headers $queryHeaders
 
-Write-Output $users.value.displayName
+Write-Output $userList.value.displayName
