@@ -31,11 +31,11 @@ $tokenBody = @{
 $tokenResponse = Invoke-RestMethod -Method Post -Uri $tokenEndpoint -Headers $tokenHeaders -Body $tokenBody 
 
 # Query the Graph for the users in the tenant. See https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/users
-$getHeaders = @{
+$queryHeaders = @{
   "Content-Type"  = "application/json"
   "Authorization" = "Bearer $($tokenResponse.access_token)"
 }
 
-$users = Invoke-RestMethod -Method Get -Uri $userQueryUrl -Headers $getHeaders
+$users = Invoke-RestMethod -Method Get -Uri $userQueryUrl -Headers $queryHeaders
 
 Write-Output $users.value.displayName
