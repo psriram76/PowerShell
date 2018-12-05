@@ -11,8 +11,6 @@ $upn =  "$samAcctName@$domain"
 
 
 $password = Read-Host -Prompt 'Enter password' -AsSecureString 
-$securePassword = ConvertTo-SecureString $password -AsPlainText -Force
-
 
 $params = @{
     'Name' = $displayName;
@@ -23,7 +21,7 @@ $params = @{
     'Description' = $description;
     'UserPrincipalName' = $upn;
     'SamAccountName' = $samAcctName;
-    'AccountPassword' = $securePassword;
+    'AccountPassword' = $Password;
     'ChangePasswordAtLogon' = $false;
     'Enabled' = $true
 }
