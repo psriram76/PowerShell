@@ -5,16 +5,13 @@
   Restore an Active Directory User from the AD recycle bin by sAMAccountName. Restores User to previous location in AD.
   Active Directory Recycle Bin needs to be enabled: https://activedirectorypro.com/enable-active-directory-recycle-bin-server-2016/
 .EXAMPLE
-  PS C:\> <example usage>
-  Explanation of what the example does
-.INPUTS
-  Inputs (if any)
-.OUTPUTS
-  Output (if any)
+  PS C:\> Restore-MDADUser test.mctest
+  
+  Restores the user test.mctest back to Active Directory.
 .NOTES
-  General notes
+  Taken from:
+  https://blogs.technet.microsoft.com/canitpro/2016/05/18/powershell-basics-restoring-a-deleted-powershell-user/
 #>
-# https://blogs.technet.microsoft.com/canitpro/2016/05/18/powershell-basics-restoring-a-deleted-powershell-user/
 
 function Restore-MDADUser {
   [CmdletBinding()]
