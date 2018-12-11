@@ -1,21 +1,31 @@
 #Simple script to create an AD user
 
-$name = ''
-$surname = ''
-$displayName = "$name $surname"
+param(
+# Parameter help description
+[Parameter(Mandatory = $true)]
+[String]
+$FirstName,
+# Parameter help description
+  [Parameter(Mandatory = $true)]
+[String]
+$Surname,
+# Parameter help description
+  [Parameter(Mandatory = $true)]
+[SecureString]
+$Password
+)
+
+$displayName = "$FirstName $Surname"
 $path = ',OU=Users,DC=example,DC=com'
 $description = 'Example of creating a user'
 $domain = 'example.com'
-$samAcctName = ("$name.$surname").ToLower()
+$samAcctName = ("$FirstName.$Surname").ToLower()
 $upn =  "$samAcctName@$domain"
-
-
-$password = Read-Host -Prompt 'Enter password' -AsSecureString 
 
 $params = @{
     'Name' = $displayName;
-    'GivenName' = $name;
-    'surname' = $surname;
+    'GivenName' = $FirstName;
+    'surname' = $Surname;
     'DisplayName' = $displayName;
     'Path' = $path;
     'Description' = $description;
