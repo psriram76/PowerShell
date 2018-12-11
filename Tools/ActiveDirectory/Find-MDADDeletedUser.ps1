@@ -3,6 +3,8 @@
   Finds a deleted Active Directory User
 .DESCRIPTION
   Find a deleted Active Directory user in the Active Directory recycle bin.
+  The Active Directory Recycle Bin needs to be enabled: https://activedirectorypro.com/enable-active-directory-recycle-bin-server-2016/
+
 .EXAMPLE
   PS C:\> Find-MDADDeletedUser -UserName test
 
