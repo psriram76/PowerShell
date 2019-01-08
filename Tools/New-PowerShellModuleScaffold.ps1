@@ -1,8 +1,8 @@
 #Create scaffolding for PowerShell modules. From: https://ramblingcookiemonster.github.io/Building-A-PowerShell-Module/
-$Path = 'C:\git\PowerShell'
-$ModuleName = 'PSNewRelic'
+$Path = 'C:\git\PSMDTools'
+$ModuleName = 'PSMDTools'
 $Author = 'Matthew Davis'
-$Description = 'PowerShell module update the New Relic server monitoring application'
+$Description = 'PowerShell module of tools to make my life easier'
 
 # Create the module and private function directories
 mkdir $Path\$ModuleName
