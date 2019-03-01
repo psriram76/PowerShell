@@ -21,6 +21,7 @@ Get-Date
 
 $Host.PrivateData.ErrorForegroundColor = 'Cyan'
 Set-PSReadlineKeyHandler -Key Tab -Function Complete
+Set-PSReadlineKeyHandler -Key 'Ctrl+P' -Function PreviousHistory
 
 function Prompt {
   $location = Get-Location
