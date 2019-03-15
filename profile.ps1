@@ -2,50 +2,61 @@ $majorVersion = $Host.Version.Major.ToString()
 $minorVersion = $Host.Version.Minor.ToString()
 $version = "$majorVersion.$minorVersion"
 
-#module Imports
-Import-Module azureext
-Import-Module AWSPowerShell
-
-#aliases
+# Aliases
+New-Alias -Name c -Value Clear-Host
 New-Alias -Name sub -Value Select-AzureRmSubscription
 New-Alias -Name add -Value Add-AzureRmAccount
+New-Alias -Name startv -Value Start-AzureRmVM
+New-Alias -Name stopv -Value Stop-AzureRmVM
+
+# Custom variables
+$hostsFile = 'C:\Windows\System32\drivers\etc\hosts'
+
 
 # add alias to find accelerators
 $TAType = [psobject].Assembly.GetType("System.Management.Automation.TypeAccelerators")
-$TAType::Add('accelerators', $TAType) 
+$TAType::Add('accelerators',$TAType) 
 # [accelerators]::Get
+
+function Find-Type {
+# PowerShell in depth book, P.54    
+    param (
+        [regex]$Pattern
+    )
+    [System.AppDomain]::CurrentDomain.GetAssemblies().GetTypes() |
+    Select-String $Pattern
+}
+
 
 Set-Location -Path C:\git
 Write-Output "PowerShell version" $version 
 Get-Date
 
+
+# copy VSCode configs to git
+Copy-Item C:\Users\Matt\AppData\Roaming\Code\User\*.json -Destination C:\git\configs\vscode\ -Force
+
 $Host.PrivateData.ErrorForegroundColor = 'Cyan'
-Set-PSReadlineKeyHandler -Key Tab -Function Complete
-
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadlineKeyHandler -Key 'Ctrl+p' -Function PreviousHistory
+Set-PSReadlineKeyHandler -Key 'alt+b' -Function ShellBackwardWord
+Set-PSReadlineKeyHandler -Key 'alt+f' -Function ShellForwardWord
+Set-PSReadlineKeyHandler -Key 'ctrl+e' -Function MoveToEndOfLine
+Set-PSReadlineKeyHandler -Key 'ctrl+a' -Function BeginningOfLine
 function Prompt {
-  $location = Get-Location
-  $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
-  $principal = [Security.Principal.WindowsPrincipal] $identity
+    $location = Get-Location
+    $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = [Security.Principal.WindowsPrincipal] $identity
 
-  if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
-    $Host.UI.RawUI.WindowTitle = "[ADMIN]: " + $location
-  }
-  else {
-    $Host.UI.RawUI.WindowTitle = $location
-  }
+    if ($principal.IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+         $Host.UI.RawUI.WindowTitle = "[ADMIN]: " + $location
+    } else {
+        $Host.UI.RawUI.WindowTitle = $location
+    }
 
-  if ($env:ConEmuANSI -eq "ON") {
-    "PS >"
-  }
-  else {
-    $env:username + " :: " + (Get-Date -format t) + "> " 
-  }
+    if ($env:ConEmuANSI -eq "ON") {
+    	"PS >"
+    } else {
+        $env:username + " :: " + (Get-Date -format t) + "> " 
+    }
 }#prompt
-
-
-			
-
-              
-
-
-
