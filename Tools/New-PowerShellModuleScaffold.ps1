@@ -17,7 +17,7 @@ New-Item "$Path\$ModuleName\$ModuleName.Format.ps1xml" -ItemType File
 New-Item "$Path\$ModuleName\en-US\about_$ModuleName.help.txt" -ItemType File
 New-Item "$Path\Tests\$ModuleName.Tests.ps1" -ItemType File
 New-ModuleManifest -Path $Path\$ModuleName\$ModuleName.psd1 `
-                   -RootModule $Path\$ModuleName\$ModuleName.psm1 `
+                   -RootModule $ModuleName.psm1 `
                    -Description $Description `
                    -PowerShellVersion 3.0 `
                    -Author $Author `

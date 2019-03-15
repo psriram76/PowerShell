@@ -1,5 +1,5 @@
 
-function Copy-JEAmi {
+function Copy-MDAmi {
   [CmdletBinding()]
   param (
     # Source AMI ID
