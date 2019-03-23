@@ -38,11 +38,7 @@ Copy-Item C:\Users\Matt\AppData\Roaming\Code\User\*.json -Destination C:\git\con
 
 $Host.PrivateData.ErrorForegroundColor = 'Cyan'
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-Set-PSReadlineKeyHandler -Key 'Ctrl+p' -Function PreviousHistory
-Set-PSReadlineKeyHandler -Key 'alt+b' -Function ShellBackwardWord
-Set-PSReadlineKeyHandler -Key 'alt+f' -Function ShellForwardWord
-Set-PSReadlineKeyHandler -Key 'ctrl+e' -Function MoveToEndOfLine
-Set-PSReadlineKeyHandler -Key 'ctrl+a' -Function BeginningOfLine
+Set-PSReadLineOption -EditMode Emacs
 function Prompt {
     $location = Get-Location
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
