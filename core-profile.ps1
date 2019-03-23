@@ -37,9 +37,8 @@ Get-Date
 Copy-Item C:\Users\Matt\AppData\Roaming\Code\User\*.json -Destination C:\git\configs\vscode\ -Force
 
 $Host.PrivateData.ErrorForegroundColor = 'Cyan'
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 Set-PSReadLineOption -EditMode Emacs
-
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 function Prompt {
     $location = Get-Location
     $identity = [Security.Principal.WindowsIdentity]::GetCurrent()
