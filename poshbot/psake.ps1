@@ -1,7 +1,13 @@
+Properties {
+    $creds = $credential
+    $ComputerName = $ComputerName
+}
+
+
 Task default -depends Test
 
 Task AnalysePlugin {
-    $moduleResults = Invoke-ScriptAnalyzer -Path $PSScriptRoot\poshbot-plugin\*.psm1  -Severity @('Error', 'Warning')
+    $moduleResults = Invoke-ScriptAnalyzer -Path $PSScriptRoot\Poshbot.TestSite\*.psm1  -Severity @('Error', 'Warning')
     if ($moduleResults) {
         $moduleResults | Format-Table
         Write-Error -Message 'One or more script analyser errors/ warnings were found'
@@ -14,8 +20,9 @@ Task test -depends AnalysePlugin {
 
 Task deployQA -depends test {
     'Deploying to QA'
-    $server = '192.168.33.20'
-    Invoke-PSDeploy -Tags QA -Force
+    $s = New-PSSession -ComputerName $ComputerName -Credential $creds
+    Copy-Item $PSScriptRoot\Poshbot.TestSite -ToSession $s -Destination C:\poshbot\plugins -Recurse -Force
+    Invoke-Command -Session $s -ScriptBlock { Restart-Service -Name 'poshbot1'}
 }
 
 Task deployProd -depends test {
