@@ -1,7 +1,6 @@
 Import-Module -Name ActiveDirectory
 
 $Width = 80
-$CommandsToExport = @()
 
 function Get-ADUserStatus {
     <#
@@ -32,13 +31,25 @@ function Get-ADUserStatus {
         [String]
         $Identity
     )
-  
+
     $user = Get-ADUser -Identity $Identity -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet 
-    $o = $user | Select-Object -Property  SamAccountName, Enabled, LockedOut, PasswordExpired, PasswordLastSet | Out-String -Width $Width
-
+    
+    
+    $properties = [ordered]@{
+        SamAccountName  = $user.SamAccountName
+        Enabled         = $user.Enabled
+        LockedOut       = $user.LockedOut
+        PasswordExpired = $user.PasswordExpired
+        PaswordLastSet  = $user.PasswordLastSet
+        PasswordExpires = ($user.PasswordLastSet).AddDays(90)
+    }
+    
+    $userStatus = New-Object -TypeName psobject -Property $properties
+    
+    $o = $userStatus | Out-String -Width $Width
+    
     New-PoshBotCardResponse -Type Normal -Text $o
-}
 
-$CommandsToExport += Invoke-SiteStatus
+}
 
 Export-ModuleMember -Function Get-ADUserStatus
