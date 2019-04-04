@@ -1,5 +1,4 @@
 $Width = 80
-$CommandsToExport = @()
 
 function Invoke-SiteStatus {
     <#
@@ -48,7 +47,5 @@ function Invoke-SiteStatus {
     }
     New-PoshBotCardResponse -Type Normal -Text $o
 }
-
-$CommandsToExport += Invoke-SiteStatus
 
 Export-ModuleMember -Function Invoke-SiteStatus
