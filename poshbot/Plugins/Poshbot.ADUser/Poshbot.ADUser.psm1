@@ -32,23 +32,23 @@ function Get-ADUserStatus {
         $Identity
     )
 
-    $user = Get-ADUser -Identity $Identity -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet 
+    $user = Get-ADUser -Identity $Identity -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
     
     
     $properties = [ordered]@{
-        SamAccountName  = $user.SamAccountName
-        Enabled         = $user.Enabled
-        LockedOut       = $user.LockedOut
-        PasswordExpired = $user.PasswordExpired
-        PaswordLastSet  = $user.PasswordLastSet
-        PasswordExpires = ($user.PasswordLastSet).AddDays(90)
+        Enabled                = $user.Enabled
+        LockedOut              = $user.LockedOut
+        PasswordExpired        = $user.PasswordExpired
+        PaswordLastSet         = $user.PasswordLastSet
+        PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
+        LastBadPasswordAttempt = $user.LastBadPasswordAttempt
     }
     
     $userStatus = New-Object -TypeName psobject -Property $properties
     
     $o = $userStatus | Out-String -Width $Width
     
-    New-PoshBotCardResponse -Type Normal -Text $o
+    New-PoshBotCardResponse -Title "SamAccountName $($user.SamAccountName)" -Type Normal -Text $o
 
 }
 
