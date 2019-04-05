@@ -32,22 +32,27 @@ function Get-ADComputerStatus {
         $Identity
     )
 
-    $computer = Get-ADComputer -Identity $Identity
+    $computer = Get-ADComputer -Filter { Name -eq $Identity }
     
-    
-    $properties = [ordered]@{
-        Enabled         = $computer.Enabled
-        LockedOut       = $computer.LockedOut
-        PasswordExpired = $computer.PasswordExpired
-        PaswordLastSet  = $computer.PasswordLastSet
+    if ($computer) {
+        $properties = [ordered]@{
+            Enabled         = $computer.Enabled
+            LockedOut       = $computer.LockedOut
+            PasswordExpired = $computer.PasswordExpired
+            PaswordLastSet  = $computer.PasswordLastSet
+        }
+        $computerStatus = New-Object -TypeName psobject -Property $properties
+        $Title = "Computer Name $($computer.Name)"
+        $o = $computerStatus | Out-String -Width $Width
+        $Type = 'Normal'
+
+    } else {
+        $Title = 'Computer Not found'  
+        $o = "Unable to find computer with the Name $Identity"
+        $Type = 'Warning'
     }
     
-    $computerStatus = New-Object -TypeName psobject -Property $properties
-    
-    $o = $computerStatus | Out-String -Width $Width
-    
-    New-PoshBotCardResponse -Title "Computer Name $($computer.Name)" -Type Normal -Text $o
-
+    New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 
 Export-ModuleMember -Function Get-ADComputerStatus
