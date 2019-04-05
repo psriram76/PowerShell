@@ -32,13 +32,14 @@ function Get-ADComputerStatus {
         $Identity
     )
 
-    $computer = Get-ADComputer -Filter { Name -eq $Identity } -properties Enabled, DistinguishedName, DNSHostName, OperatingSystem
+    $computer = Get-ADComputer -Filter { Name -eq $Identity } -properties Enabled, DistinguishedName, DNSHostName, OperatingSystem, IPv4Address
     
     if ($computer) {
         $properties = [ordered]@{
             Enabled           = $computer.Enabled
             DNSHostName       = $computer.DNSHostName
             OperatingSystem   = $computer.OperatingSystem
+            IPv4Address       = $computer.IPv4Address
             DistinguishedName = $computer.DistinguishedName
         }
         $computerStatus = New-Object -TypeName psobject -Property $properties
