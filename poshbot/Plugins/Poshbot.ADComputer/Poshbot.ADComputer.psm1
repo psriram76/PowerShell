@@ -45,13 +45,11 @@ function Get-ADComputerStatus {
         $Title = "Computer Name $($computer.Name)"
         $o = $computerStatus | Out-String -Width $Width
         $Type = 'Normal'
-
     } else {
         $Title = 'Computer Not found'  
         $o = "Unable to find computer with the Name $Identity"
         $Type = 'Warning'
     }
-    
     New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 

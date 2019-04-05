@@ -32,8 +32,6 @@ function Get-ADUserStatus {
         $Identity
     )
 
-    # Get user(s)
-
     $user = Get-ADUser -Filter { SamAccountName -eq $Identity } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
 
     if ($user) {
@@ -49,7 +47,6 @@ function Get-ADUserStatus {
         $Title = "SamAccountName $($user.SamAccountName)" 
         $o = $userStatus | Format-List | Out-String -Width $Width
         $Type = 'Normal'
-
     } else {
         $Title = 'User Not found'  
         $o = "Unable to find user with the SamAccountName $Identity"
