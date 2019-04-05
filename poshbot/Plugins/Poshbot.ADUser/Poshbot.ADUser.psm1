@@ -16,7 +16,7 @@ function Get-ADUserStatus {
     Output (if any)
     .NOTES
     General notes
-    #>
+#>
 
     [PoshBot.BotCommand(
         CommandName = 'aduserstatus',
@@ -53,7 +53,7 @@ function Get-ADUserStatus {
         $Type = 'Normal'
     } else {
         $Title = 'User Not found'  
-        $o = "Unable to find user with the name $Identity"
+        $o = "Unable to find user with the SamAccountName $Identity"
         $Type = 'Warning'
     }
 
