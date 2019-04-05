@@ -4,24 +4,24 @@ $Width = 80
 
 function Get-ADComputerStatus {
     <#
-  .SYNOPSIS
+    .SYNOPSIS
     Get the status of an AD Computer
 
-  .EXAMPLE
+    .EXAMPLE
     !Get-ADComputerStatus lap123
     Gets the account status of the Computer lap123
-  .INPUTS
+    .INPUTS
     AD identity
-  .OUTPUTS
+    .OUTPUTS
     Output (if any)
-  .NOTES
+    .NOTES
     General notes
-  #>
+    #>
 
     [PoshBot.BotCommand(
         CommandName = 'adcomputerstatus',
         Permissions = 'read',
-        Aliases = ('cs','computerstatus')
+        Aliases = ('cs', 'computerstatus')
     )]
 
     [CmdletBinding()]
@@ -36,10 +36,10 @@ function Get-ADComputerStatus {
     
     
     $properties = [ordered]@{
-        Enabled                = $computer.Enabled
-        LockedOut              = $computer.LockedOut
-        PasswordExpired        = $computer.PasswordExpired
-        PaswordLastSet         = $computer.PasswordLastSet
+        Enabled         = $computer.Enabled
+        LockedOut       = $computer.LockedOut
+        PasswordExpired = $computer.PasswordExpired
+        PaswordLastSet  = $computer.PasswordLastSet
     }
     
     $computerStatus = New-Object -TypeName psobject -Property $properties
