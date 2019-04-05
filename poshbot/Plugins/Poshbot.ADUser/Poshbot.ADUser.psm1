@@ -4,19 +4,19 @@ $Width = 80
 
 function Get-ADUserStatus {
     <#
-  .SYNOPSIS
-    Get the status of an AD user
+    .SYNOPSIS
+      Get the status of an AD user
 
-  .EXAMPLE
-    !Get-ADUserStatus test.mctest
-    Gets the account status of the user test.mctest
-  .INPUTS
-    AD identity
-  .OUTPUTS
-    Output (if any)
-  .NOTES
-    General notes
-  #>
+    .EXAMPLE
+      !Get-ADUserStatus test.mctest
+      Gets the account status of the user test.mctest
+    .INPUTS
+      AD identity
+    .OUTPUTS
+      Output (if any)
+    .NOTES
+      General notes
+    #>
 
     [PoshBot.BotCommand(
         CommandName = 'aduserstatus',
@@ -32,24 +32,32 @@ function Get-ADUserStatus {
         $Identity
     )
 
-    $user = Get-ADUser -Identity $Identity -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
+    # Get user(s)
+
+    $user = Get-ADUser -Filter { Name -like "*$Identity*" } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
+
+    if ($user) {
+        $properties = [ordered]@{
+            Enabled                = $user.Enabled
+            LockedOut              = $user.LockedOut
+            PasswordExpired        = $user.PasswordExpired
+            PaswordLastSet         = $user.PasswordLastSet
+            PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
+            LastBadPasswordAttempt = $user.LastBadPasswordAttempt
+        }
     
+        $userStatus = New-Object -TypeName psobject -Property $properties
     
-    $properties = [ordered]@{
-        Enabled                = $user.Enabled
-        LockedOut              = $user.LockedOut
-        PasswordExpired        = $user.PasswordExpired
-        PaswordLastSet         = $user.PasswordLastSet
-        PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
-        LastBadPasswordAttempt = $user.LastBadPasswordAttempt
+        $Title = "SamAccountName $($user.SamAccountName)" 
+        $o = $userStatus | Out-String -Width $Width
+        $Type = 'Normal'
+    } else {
+        $Title = 'User Not found'  
+        $o = "Unable to find user with the name $Identity"
+        $Type = 'Warning'
     }
     
-    $userStatus = New-Object -TypeName psobject -Property $properties
-    
-    $o = $userStatus | Out-String -Width $Width
-    
-    New-PoshBotCardResponse -Title "SamAccountName $($user.SamAccountName)" -Type Normal -Text $o
-
+    New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 
 Export-ModuleMember -Function Get-ADUserStatus
