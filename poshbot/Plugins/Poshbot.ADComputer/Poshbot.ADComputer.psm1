@@ -32,14 +32,14 @@ function Get-ADComputerStatus {
         $Identity
     )
 
-    $computer = Get-ADComputer -Filter { Name -eq $Identity }
+    $computer = Get-ADComputer -Filter { Name -eq $Identity } -properties Enabled, DistinguishedName, DNSHostName, OperatingSystem
     
     if ($computer) {
         $properties = [ordered]@{
-            Enabled         = $computer.Enabled
-            LockedOut       = $computer.LockedOut
-            PasswordExpired = $computer.PasswordExpired
-            PaswordLastSet  = $computer.PasswordLastSet
+            Enabled           = $computer.Enabled
+            DistinguishedName = $computer.DistinguishedName
+            DNSHostName       = $computer.DNSHostName
+            OperatingSystem   = $computer.OperatingSystem
         }
         $computerStatus = New-Object -TypeName psobject -Property $properties
         $Title = "Computer Name $($computer.Name)"
