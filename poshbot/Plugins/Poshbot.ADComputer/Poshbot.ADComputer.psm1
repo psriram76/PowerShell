@@ -37,9 +37,9 @@ function Get-ADComputerStatus {
     if ($computer) {
         $properties = [ordered]@{
             Enabled           = $computer.Enabled
-            DistinguishedName = $computer.DistinguishedName
             DNSHostName       = $computer.DNSHostName
             OperatingSystem   = $computer.OperatingSystem
+            DistinguishedName = $computer.DistinguishedName
         }
         $computerStatus = New-Object -TypeName psobject -Property $properties
         $Title = "Computer Name $($computer.Name)"
