@@ -5,23 +5,23 @@ $Width = 80
 function Get-ADUserStatus {
     <#
     .SYNOPSIS
-      Get the status of an AD user
+    Get the status of an AD user
 
     .EXAMPLE
-      !Get-ADUserStatus test.mctest
-      Gets the account status of the user test.mctest
+    !Get-ADUserStatus test.mctest
+    Gets the account status of the user test.mctest
     .INPUTS
-      AD identity
+    AD identity
     .OUTPUTS
-      Output (if any)
+    Output (if any)
     .NOTES
-      General notes
+    General notes
     #>
 
     [PoshBot.BotCommand(
         CommandName = 'aduserstatus',
         Permissions = 'read',
-        Aliases = ('userstatus', 'us')
+        Aliases = ('us', 'userstatus')
     )]
 
     [CmdletBinding()]
@@ -34,7 +34,7 @@ function Get-ADUserStatus {
 
     # Get user(s)
 
-    $user = Get-ADUser -Filter { Name -like "*$Identity*" } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
+    $user = Get-ADUser -Filter { SamAccountName -eq $Identity } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
 
     if ($user) {
         $properties = [ordered]@{
@@ -45,18 +45,18 @@ function Get-ADUserStatus {
             PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
             LastBadPasswordAttempt = $user.LastBadPasswordAttempt
         }
-    
+
         $userStatus = New-Object -TypeName psobject -Property $properties
-    
+
         $Title = "SamAccountName $($user.SamAccountName)" 
-        $o = $userStatus | Out-String -Width $Width
+        $o = $userStatus | Format-List | Out-String -Width $Width
         $Type = 'Normal'
     } else {
         $Title = 'User Not found'  
         $o = "Unable to find user with the name $Identity"
         $Type = 'Warning'
     }
-    
+
     New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 
