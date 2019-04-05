@@ -43,7 +43,7 @@ function Get-ADComputerStatus {
         }
         $computerStatus = New-Object -TypeName psobject -Property $properties
         $Title = "Computer Name $($computer.Name)"
-        $o = $computerStatus | Out-String -Width $Width
+        $o = $computerStatus | Format-List | Out-String -Width $Width
         $Type = 'Normal'
     } else {
         $Title = 'Computer Not found'  
