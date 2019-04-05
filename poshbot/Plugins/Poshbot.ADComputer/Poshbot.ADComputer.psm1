@@ -21,7 +21,7 @@ function Get-ADComputerStatus {
     [PoshBot.BotCommand(
         CommandName = 'adcomputerstatus',
         Permissions = 'read',
-        Aliases = ('computerstatus', 'us')
+        Aliases = ('cs','computerstatus')
     )]
 
     [CmdletBinding()]
