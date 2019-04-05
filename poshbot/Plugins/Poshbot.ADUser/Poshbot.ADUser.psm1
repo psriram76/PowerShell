@@ -45,18 +45,16 @@ function Get-ADUserStatus {
             PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
             LastBadPasswordAttempt = $user.LastBadPasswordAttempt
         }
-
         $userStatus = New-Object -TypeName psobject -Property $properties
-
         $Title = "SamAccountName $($user.SamAccountName)" 
         $o = $userStatus | Format-List | Out-String -Width $Width
         $Type = 'Normal'
+
     } else {
         $Title = 'User Not found'  
         $o = "Unable to find user with the SamAccountName $Identity"
         $Type = 'Warning'
     }
-
     New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 
