@@ -6,12 +6,18 @@ function Get-ADUserStatus {
     <#
     .SYNOPSIS
     Get the status of an AD user
-
+    Requires the users samAccountName with the -identity parameter or search for samAccountNames with the -name parameter
     .EXAMPLE
-    !Get-ADUserStatus test.mctest
+    !Get-ADUserStatus -i test.mctest
+    !Get-ADUserStatus -identity test.mctest
     Gets the account status of the user test.mctest
+
+    !Get-ADUserStatus -n test
+    !Get-ADUserStatus -name test
+    Returns a list of samAccountNames of users with the name test
     .INPUTS
     AD identity
+    AD name
     .OUTPUTS
     Output (if any)
     .NOTES
@@ -27,31 +33,56 @@ function Get-ADUserStatus {
     [CmdletBinding()]
     param (
         # Identity of AD User
-        [Parameter(Position = 0)]
+        [Parameter(Position = 1)]
+        [Alias('n')]
         [String]
-        $Identity
+        $Identity,
+        # Search by name
+        [Parameter(Position = 1)]
+        [ValidateNotNullOrEmpty()]
+        [Alias('n')]
+        [String]
+        $Name
     )
 
-    $user = Get-ADUser -Filter { SamAccountName -eq $Identity } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt
+    if ( $PSBoundParameters.ContainsKey('Name')) {
+        $userList = Get-ADUser -Filter "Name -like '*$Name*'"
 
-    if ($user) {
-        $properties = [ordered]@{
-            Enabled                = $user.Enabled
-            LockedOut              = $user.LockedOut
-            PasswordExpired        = $user.PasswordExpired
-            PaswordLastSet         = $user.PasswordLastSet
-            PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
-            LastBadPasswordAttempt = $user.LastBadPasswordAttempt
+        if ($userList.count -gt 0) {
+            $Title = "List of SamAccountNames for the user name: $($Name)" 
+            $o = $userList.samaccountname | Format-List | Out-String -Width $Width
+            $Type = 'Normal'
+        } else {
+            # no users found with specified name
+            $Title = 'No Users found'  
+            $o = "Unable to find any users with the name $Name"
+            $Type = 'Warning'
         }
-        $userStatus = New-Object -TypeName psobject -Property $properties
-        $Title = "SamAccountName $($user.SamAccountName)" 
-        $o = $userStatus | Format-List | Out-String -Width $Width
-        $Type = 'Normal'
     } else {
-        $Title = 'User Not found'  
-        $o = "Unable to find user with the SamAccountName $Identity"
-        $Type = 'Warning'
+        $user = Get-ADUser -Filter { SamAccountName -eq $Identity } -Properties Enabled, LockedOut, PasswordExpired, PasswordLastSet, LastBadPasswordAttempt, Description
+
+        if ($user) {
+            $properties = [ordered]@{
+                Enabled                = $user.Enabled
+                LockedOut              = $user.LockedOut
+                PasswordExpired        = $user.PasswordExpired
+                PaswordLastSet         = $user.PasswordLastSet
+                PasswordExpires        = ($user.PasswordLastSet).AddDays(90)
+                LastBadPasswordAttempt = $user.LastBadPasswordAttempt
+                Description            = $user.Description
+            }
+            $userStatus = New-Object -TypeName psobject -Property $properties
+            $Title = "SamAccountName $($user.SamAccountName)" 
+            $o = $userStatus | Format-List | Out-String -Width $Width
+            $Type = 'Normal'
+        } else {
+            $Title = 'User Not found'  
+            $o = "Unable to find user with the SamAccountName $Identity"
+            $Type = 'Warning'
+        }
     }
+
+
     New-PoshBotCardResponse -Title $Title -Type $Type -Text $o
 }
 
