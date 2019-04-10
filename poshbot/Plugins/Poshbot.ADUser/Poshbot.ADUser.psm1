@@ -34,7 +34,7 @@ function Get-ADUserStatus {
     param (
         # Identity of AD User
         [Parameter(Position = 1)]
-        [Alias('n')]
+        [Alias('i')]
         [String]
         $Identity,
         # Search by name
