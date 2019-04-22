@@ -21,4 +21,5 @@ task RunTests {
 task DeployModule -depends AnalyseFunction, RunTests {
     'Deploying module'
     Copy-Item $PSScriptRoot\Remove-MDOldFile -Destination C:\TEMP -Recurse -Force
+    # $Env:PSModulePath += ';' + (Resolve-Path .) for deploying to a PowerShell repo
 }
