@@ -6,7 +6,7 @@ $Root = Resolve-Path "$projectRoot\$ModuleName"
 
 Get-Module $ModuleName | Remove-Module -Force
 
-$ModuleInformation = Import-Module $Root\$ModuleName.psm1 -Force -PassThru
+$ModuleInformation = Import-Module $Root\$ModuleName.psd1 -Force -PassThru
 
 $ExportedFunctions = $ModuleInformation.ExportedFunctions.Values.Name
 

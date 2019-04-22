@@ -1,24 +1,34 @@
 task default -depends AnalyseFunction
+$ModuleName = 'Remove-MDOldFile'
 
 task AnalyseFunction {
     'Running Script Analyser on the function'
-    $FunctionSAResults = Invoke-ScriptAnalyzer -Path $PSScriptRoot\Remove-MDOldFile\*.psm1 -Severity @('Error', 'Warning') 
+    $FunctionSAResults = Invoke-ScriptAnalyzer -Path $PSScriptRoot\$ModuleName\*.psm1 -Severity @('Error', 'Warning') 
     if ($FunctionSAResults) {
         $FunctionSAResults | Format-Table
         Write-Error -Message 'One or more script analyser errors/ warnings were found'
     }
 }
 
-task RunTests {
+task RunFunctionTests {
     'Running Pester test on the function'
-    $TestResults = Invoke-Pester -Path $PSScriptRoot\Tests\*.Tests.ps1 -PassThru
-    if ($TestResults.FailedCount -gt 0) {
-        $TestResults | Format-Table
+    $FunctionTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\$ModuleName.Tests.ps1 -PassThru
+    if ($FunctionTestResults.FailedCount -gt 0) {
+        $FunctionTestResults | Format-Table
         Write-Error -Message 'One or more pester tests failed.'
     }
 }
 
-task DeployModule -depends AnalyseFunction, RunTests {
+task RunManifestTests {
+    'Running Pester test on the module manifest'
+    $ManifestTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\Manifest.Tests.ps1 -PassThru
+    if ($ManifestTestResults.FailedCount -gt 0) {
+        $ManifestTestResults | Format-Table
+        Write-Error -Message 'One or more pester tests failed.'
+    }
+}
+
+task DeployModule -depends AnalyseFunction, RunFunctionTests, RunManifestTests {
     'Deploying module'
     Copy-Item $PSScriptRoot\Remove-MDOldFile -Destination C:\TEMP -Recurse -Force
     # $Env:PSModulePath += ';' + (Resolve-Path .) for deploying to a PowerShell repo
