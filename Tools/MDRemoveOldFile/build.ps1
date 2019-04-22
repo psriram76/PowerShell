@@ -1,6 +1,10 @@
 [cmdletbinding()]
 param(
-    [string[]]$Task = 'default'
+    # Parameter help description
+    [Parameter(Mandatory = $true)]
+    [ValidateSet('default', 'AnalyseFunction', 'RunFunctionTests', 'RunManifestTests', 'DeployModule')]
+    [string[]]
+    $Task = 'default'
 )
 
 if (!(Get-Module -Name Pester -ListAvailable)) { Install-Module -Name PSScriptAnalyzer -Scope CurrentUser }
