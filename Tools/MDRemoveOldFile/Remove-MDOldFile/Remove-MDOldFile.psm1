@@ -1,5 +1,7 @@
 function Remove-MDOldFile {
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess = $True
+    )]
     param (
         # Path of directory
         [Parameter(Mandatory = $true)]
