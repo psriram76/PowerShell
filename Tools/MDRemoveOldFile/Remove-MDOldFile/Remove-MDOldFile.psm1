@@ -17,7 +17,7 @@ function Remove-MDOldFile {
     }
     
     process {
-        if ( Test-Path $Path) {
+        if (Test-Path $Path) {
             Get-ChildItem -Path $Path | Where-Object -Property 'LastWriteTime' -LT (Get-Date).AddDays(-$NumberOfDaysToKeep) |
             Remove-Item -Force    
         } else {
