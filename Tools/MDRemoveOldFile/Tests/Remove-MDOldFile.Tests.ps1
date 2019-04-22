@@ -23,17 +23,22 @@ Describe "Remove-MDOldFile" {
             Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 45
             (Get-ChildItem 'TestDrive:\').count | Should Be 3
         }
-        It "It removes 1 file" {
+        It "It removes 1 file over 25 days old" {
             Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 25
             (Get-ChildItem 'TestDrive:\').count | Should Be 2
         }
-        It "It removes 2 files" {
+        It "It removes 2 files over 15 days old" {
             Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 11
             (Get-ChildItem 'TestDrive:\').count | Should Be 1
         }
-        It "It removes all files" {
+        It "It removes all files over 2 days old" {
             Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 2
             (Get-ChildItem 'TestDrive:\').count | Should Be 0
+        }
+        It "Warns when a path is not found" {
+            Mock Test-Path { return $false }
+            Remove-MDOldFile -Path 'TestDrive:\NoPath' -NumberOfDaysToKeep 10 -WarningVariable warn 3> $null
+            $warn.message | Should Be 'Path not found'
         }
     }
 }
