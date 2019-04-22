@@ -6,39 +6,41 @@ Get-Module Remove-MDOldFile | Remove-Module -Force
 Import-Module $Root\Remove-MDOldFile.psm1 -Force
 
 Describe "Remove-MDOldFile" {
+    $TestDrive = 'TestDrive:\'
     Context "Test removal date logic" {
-        $oldFile1Day = "TestDrive:\of1d.txt"
-        $oldFile2Day = "TestDrive:\of2d.txt"
-        $oldFile3Day = "TestDrive:\of3d.txt"
-
-        Set-Content -Path $oldFile1Day -Value 'test'
-        Set-Content -Path $oldFile2Day -Value 'test'
-        Set-Content -Path $oldFile3Day -Value 'test'
-
-        Set-ItemProperty -Path $oldFile1Day -Name 'LastWriteTime' -Value (Get-Date).AddDays(-10)
-        Set-ItemProperty -Path $oldFile2Day -Name 'LastWriteTime' -Value (Get-Date).AddDays(-20)
-        Set-ItemProperty -Path $oldFile3Day -Name 'LastWriteTime' -Value (Get-Date).AddDays(-30)
+        # Create 3 test files with last write times of 10, 20 and 30 days ago
+        10, 20, 30 | ForEach-Object { Set-Content -Value 'Test'-Path $TestDrive+"ofd$_.txt"
+            Set-ItemProperty -Path $TestDrive+"ofd$_.txt" -Name 'LastWriteTime' -Value (Get-Date).AddDays(-$_)
+        }
 
         It "It removes no files" {
-            Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 45
-            (Get-ChildItem 'TestDrive:\').count | Should Be 3
+            Remove-MDOldFile -Path  $TestDrive -NumberOfDaysToKeep 45
+            (Get-ChildItem  $TestDrive).count | Should Be 3
         }
         It "It removes 1 file over 25 days old" {
-            Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 25
-            (Get-ChildItem 'TestDrive:\').count | Should Be 2
+            Remove-MDOldFile -Path  $TestDrive -NumberOfDaysToKeep 25
+            (Get-ChildItem $TestDrive).count | Should Be 2
         }
         It "It removes 2 files over 15 days old" {
-            Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 11
-            (Get-ChildItem 'TestDrive:\').count | Should Be 1
+            Remove-MDOldFile -Path $TestDrive -NumberOfDaysToKeep 11
+            (Get-ChildItem $TestDrive).count | Should Be 1
         }
         It "It removes all files over 2 days old" {
-            Remove-MDOldFile -Path 'TestDrive:\' -NumberOfDaysToKeep 2
-            (Get-ChildItem 'TestDrive:\').count | Should Be 0
+            Remove-MDOldFile -Path $TestDrive -NumberOfDaysToKeep 2
+            (Get-ChildItem $TestDrive).count | Should Be 0
         }
         It "Warns when a path is not found" {
             Mock Test-Path { return $false }
             Remove-MDOldFile -Path 'TestDrive:\NoPath' -NumberOfDaysToKeep 10 -WarningVariable warn 3> $null
             $warn.message | Should Be 'Path not found'
+        }
+        Context "File type removal" {
+            'txt', 'log', 'etl', 'dll', 'exe', 'msc' | 
+            ForEach-Object { Set-Content -Value 'test' -Path $TestDrive+"test.$_" }
+ 
+            It "Does not remove executable files" {
+                (Get-ChildItem $TestDrive).count | Should Be 5
+            }
         }
     }
 }
