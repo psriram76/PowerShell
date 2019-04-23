@@ -12,7 +12,12 @@ function Remove-MDOldFile {
         [Parameter(Mandatory = $true)]
         [ValidateNotNullOrEmpty()]
         [int]
-        $NumberOfDaysToKeep
+        $NumberOfDaysToKeep,
+        # File Type to remove
+        [Parameter(Mandatory = $true)]
+        [string]
+        [ValidateSet("log", "txt", "etl")]
+        $FileType
     )
     
     begin {
@@ -20,8 +25,8 @@ function Remove-MDOldFile {
     
     process {
         if (Test-Path $Path) {
-            Get-ChildItem -Path $Path | Where-Object -Property 'LastWriteTime' -LT (Get-Date).AddDays(-$NumberOfDaysToKeep) |
-            Remove-Item -Force    
+            Get-ChildItem -Path $Path | Where-Object -FilterScript { $_.LastWriteTime -LT (Get-Date).AddDays(-$NumberOfDaysToKeep) -and $_.Name -like "*.$FileType" }|
+            Remove-Item -Force 
         } else {
             Write-Warning "Path not found"
         }
