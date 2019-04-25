@@ -26,8 +26,7 @@ $SplitExpiryDate = $ReturnedExpiryDate.Split('/')
 $SplitExpiryDate = $SplitExpiryDate.split(' ')
 
 # Create the expiry date to compare in datetime format
-[datetime]$ExpiryDate = $SplitExpiryDate[2] + '-' + $SplitExpiryDate[1] + '-' + $SplitExpiryDate[0] + 'T' + $SplitExpiryDate[3]
-
+[datetime]$ExpiryDate = $SplitExpiryDate[2] + '-' + $SplitExpiryDate[1] + '-' + $SplitExpiryDate[0]
 
 
 # Alert if there is less than 14 days until expiry
