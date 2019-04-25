@@ -28,8 +28,7 @@ function New-MDSlackMessage {
     
     $payload = @{
         "text" = $Message
-        'channel' = 'random'
     }
 
-    Invoke-RestMethod -Method Post -Uri $SlackHook  -Body (ConvertTo-Json -InputObject $payload  -Compress) | Out-Null
+    Invoke-RestMethod -Method Post -Uri $SlackHook  -Body (ConvertTo-Json -InputObject $payload -Compress) -UseBasicParsing | Out-Null
 }

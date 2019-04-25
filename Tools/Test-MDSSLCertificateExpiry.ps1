@@ -39,22 +39,3 @@ Write-Output "$uri Cert expires on the $ExpiryDate"
 # Message to slack
 $SlackHook = ''
 $Message = "$uri Cert expires on the $ExpiryDate"
-
-function New-SlackMessage {
-    param(
-        # URI of Slack Hook
-        [Parameter(Mandatory = $true, Position = 0)]
-        [string]
-        $URI,
-        # Message To Send
-        [Parameter(Mandatory = $true, Position = 1)]
-        [string]
-        $Message
-    )
-    
-    $payload = @{
-        'text' = $Message
-    }
-
-    Invoke-WebRequest -Body (ConvertTo-Json -Compress -InputObject $payload) -Method Post -Uri $SlackHook | Out-Null
-}
