@@ -28,6 +28,7 @@ $SplitExpiryDate = $SplitExpiryDate.split(' ')
 # Create the expiry date to compare in datetime format
 [datetime]$ExpiryDate = $SplitExpiryDate[2] + '-' + $SplitExpiryDate[1] + '-' + $SplitExpiryDate[0]
 
+$ExpiryDate = [datetime]::Parse($WebRequest.ExpiryDate)
 
 # Alert if there is less than 14 days until expiry
 $ExpiryDate.AddDays(-14) -lt $date
