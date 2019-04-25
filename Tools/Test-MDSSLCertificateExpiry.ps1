@@ -16,26 +16,15 @@
     General notes
 #>
 
-# We get date return: '16/10/2019 19:59:59'
-# We need it in this format: 66/1-06-15T13:45:30
-# https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings
 $date = Get-Date
 
-$ReturnedExpiryDate = Get-MDSSLCertificateExpiry -Uri 'https://matthewdavis111.com'
-$SplitExpiryDate = $ReturnedExpiryDate.Split('/')
-$SplitExpiryDate = $SplitExpiryDate.split(' ')
-
-# Create the expiry date to compare in datetime format
-[datetime]$ExpiryDate = $SplitExpiryDate[2] + '-' + $SplitExpiryDate[1] + '-' + $SplitExpiryDate[0]
-
+$WebRequest = Get-MDSSLCertificateExpiry -Uri 'https://matthewdavis111.com'
 $ExpiryDate = [datetime]::Parse($WebRequest.ExpiryDate)
 
 # Alert if there is less than 14 days until expiry
-$ExpiryDate.AddDays(-14) -lt $date
+if ($ExpiryDate.AddDays(-14) -lt $date) {
+    #Send alert
+    Write-Output "$uri Cert expires on the $ExpiryDate"
+}
 
-Write-Output "$uri Cert expires on the $ExpiryDate"
 
-
-# Message to slack
-$SlackHook = ''
-$Message = "$uri Cert expires on the $ExpiryDate"
