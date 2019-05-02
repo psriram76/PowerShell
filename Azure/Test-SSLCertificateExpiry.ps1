@@ -83,10 +83,9 @@ function New-MDSlackMessage {
     Invoke-RestMethod -Method Post -Uri $SlackHook  -Body (ConvertTo-Json -InputObject $payload -Compress) -UseBasicParsing | Out-Null
 }
 
-$UriList = 'https://wiki.just-eat.com', 'https://teamcity.matthewdavis111.com/login.html'
-$Date = [datetime]'Monday, May 20 2019 3:51:08 PM'
+$UriList = 'https://wiki.just-eat.com', 'https://jira.just-eat.net', 'https://bsr.ict.je-labs.com/login.html', 'https://ci.je-labs.com/login.html'
+$Date = Get-Date
 $SlackHook = Get-AutomationVariable -Name 'SlackWebHookUri'
-
 $UriList | foreach-Object {
     $WebRequest = Get-MDSSLCertificateExpiry -Uri $_
 
@@ -94,21 +93,17 @@ $UriList | foreach-Object {
 
     # Alert if there is less than 14, 7 or 3 days remaining.
 
-    if ($ExpiryDate.AddDays(-14) -lt $date) {
-        $Message =  "Test date to trigger = $date `nCert Expiring in the next 14 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
+    if ($ExpiryDate.AddDays(-14) -lt $Date) {
+        $Message =  "Cert Expiring in the next 14 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
     }  
-    if ($ExpiryDate.AddDays(-7) -lt $date) {
-        $Message =  "Test date to trigger = $date `nCert Expiring in the next 7 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
+    if ($ExpiryDate.AddDays(-7) -lt $Date) {
+        $Message =  "Cert Expiring in the next 7 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
     }  
-    if ($ExpiryDate.AddDays(-3) -lt $date) {
-        $Message =  "*Test date to trigger* = $date `nCert Expiring in the next 3 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
+    if ($ExpiryDate.AddDays(-3) -lt $Date) {
+        $Message =  "Cert Expiring in the next 3 days`n$_ Expires: $($ExpiryDate.ToString('yyyy-MM-dd'))"
     }  
     New-MDSlackMessage -Uri $SlackHook -Message $Message
     Write-Output $Message 
     # Clear message varibale value  
     $Message = $Null
 }
-
-
-
-
