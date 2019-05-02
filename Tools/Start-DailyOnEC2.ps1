@@ -27,7 +27,6 @@ function Start-DailyOnEC2 {
     begin {
         Set-DefaultAWSRegion -Region $Region
     }
-    
     process {
         # Get all ec2 instances with DailyOn tag set to true
         try {
