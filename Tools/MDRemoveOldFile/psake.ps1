@@ -12,7 +12,7 @@ task AnalyseFunction {
 
 task RunFunctionTests {
     'Running Pester test on the function'
-    $FunctionTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\$ModuleName.Tests.ps1 -PassThru
+    $FunctionTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\$ModuleName.Tests.ps1 -PassThru -OutputFile results.xml -OutputFormat NUnitXml
     if ($FunctionTestResults.FailedCount -gt 0) {
         $FunctionTestResults | Format-Table
         Write-Error -Message 'One or more pester tests failed.'
@@ -21,7 +21,7 @@ task RunFunctionTests {
 
 task RunManifestTests {
     'Running Pester test on the module manifest'
-    $ManifestTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\Manifest.Tests.ps1 -PassThru
+    $ManifestTestResults = Invoke-Pester -Path $PSScriptRoot\Tests\Manifest.Tests.ps1 -PassThru -OutputFile results.xml -OutputFormat NUnitXml
     if ($ManifestTestResults.FailedCount -gt 0) {
         $ManifestTestResults | Format-Table
         Write-Error -Message 'One or more pester tests failed.'
