@@ -83,7 +83,7 @@ function New-MDSlackMessage {
     Invoke-RestMethod -Method Post -Uri $SlackHook  -Body (ConvertTo-Json -InputObject $payload -Compress) -UseBasicParsing | Out-Null
 }
 
-$UriList = 'https://wiki.just-eat.com', 'https://jira.just-eat.net', 'https://bsr.ict.je-labs.com/login.html', 'https://ci.je-labs.com/login.html'
+$UriList = 'web.example.com', 'test.example.com'
 $Date = Get-Date
 $SlackHook = Get-AutomationVariable -Name 'SlackWebHookUri'
 $UriList | foreach-Object {
