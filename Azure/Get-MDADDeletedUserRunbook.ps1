@@ -1,6 +1,3 @@
-<#
-Script to demo how to get data from a posted webhook
-#>
 Param
 (
     [object]$WebhookData
@@ -19,11 +16,7 @@ if ($WebhookData) {
 
         Return
     }
-
     $request = (ConvertFrom-JSON -InputObject $WebhookData.RequestBody)
-    #$data = (ConvertFrom-JSON -InputObject $request.RequestBody)
-    Write-Output "Message = $($request.Message)"
-    Write-Output "Message = $($request.From)"
 } Else {
     Write-Output 'No data received'
 }
@@ -64,11 +57,7 @@ function New-MDSlackMessage {
     Invoke-RestMethod -Method Post -Uri $Uri  -Body (ConvertTo-Json -InputObject $payload -Compress) -UseBasicParsing | Out-Null
 }
 
-Start-Sleep -seconds 3
 $uri = Get-AutomationVariable -Name 'SlackWebHookUri'
-
-
-
 $deletedObjectContainer = (get-addomain).DeletedObjectsContainer
 
 $searchstring = "$($request.Message)"
@@ -76,7 +65,7 @@ $searchstring = $searchstring.Trim()
 
 $userList = Get-ADObject -SearchBase $deletedObjectContainer -IncludeDeletedObjects -filter "sAMAccountName -like '*$searchstring*'" -Properties userPrincipalName, sAMAccountName |
 Select-Object userPrincipalName, sAMAccountName
-#Write-Output $userList
+
 
 $foundDeletedUsers = New-Object -TypeName System.Collections.Generic.List[pscustomobject]
 $foundDeletedUsers.Add("Found the following deleted samAccountNames:")
