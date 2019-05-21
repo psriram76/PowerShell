@@ -23,17 +23,17 @@ function Remove-MDOldFile {
     )]
     param (
         # Path of directory
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
-        [string]
+        [System.IO.FileInfo]
         $Path,
         # Number of days to keep
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [ValidateNotNullOrEmpty()]
         [int]
         $NumberOfDaysToKeep,
         # File Type to remove
-        [Parameter(Mandatory = $true)]
+        [Parameter(Mandatory)]
         [string]
         [ValidateSet("log", "txt", "etl")]
         $FileType
