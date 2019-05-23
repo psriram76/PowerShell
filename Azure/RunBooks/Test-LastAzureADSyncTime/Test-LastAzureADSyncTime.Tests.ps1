@@ -7,17 +7,17 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
   function Connect-MsolService {}
   function Get-MsolCompanyInformation {}
 Describe "Test-LastAzureADSyncTime" {
-
-      function Get-AutomationPSCredential {}
+    function Get-AutomationPSCredential {}
     Mock Import-Module { }
     Mock Connect-MsolService -MockWith { }
     Mock Get-AutomationPSCredential -MockWith {  }
+
     Mock Get-MsolCompanyInformation -MockWith {
         [PSCustomObject]@{ 
-            LastDirSyncTime = (Get-Date).AddHours(-3) }
+            LastDirSyncTime = (Get-Date).AddHours(-10) 
+        }
     }
     $r = . "$here\$sut"
-
     It "Sync ran 3 hours ago. Returns a message containing Azure" {
         $r | Should -BeLike "Azure*"
     }
@@ -37,7 +37,7 @@ Describe "Test-LastAzureADSyncTime" {
         }
     }
 
-     $r = . "$here\$sut"
+    $r = . "$here\$sut"
     It "Sync ran one hour ago so no output" {
         $r | Should -Be $null
     }
