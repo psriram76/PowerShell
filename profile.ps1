@@ -56,3 +56,8 @@ function Prompt {
         $env:username + " :: " + (Get-Date -format t) + "> " 
     }
 }#prompt
+
+function ip(){
+    # Get public IP address
+    (Invoke-RestMethod -Uri 'https://api.ipify.org?format=json' -Method Get).ip
+}#ip
