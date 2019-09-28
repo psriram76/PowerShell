@@ -26,7 +26,7 @@ function Find-MDADUser {
     )
     switch ($surname) {
         $true { Get-ADUser -filter {Surname -like $Name} }
-        Default {Get-ADUser -filter {GivenName -like $Name}}
+        Default { Get-ADUser -filter { GivenName -like $Name } }
     }   
 }
 
