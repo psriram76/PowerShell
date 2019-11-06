@@ -58,7 +58,7 @@ catch {
 $userList = Import-Csv -Path $csvPath
 #endregion
 
-$ExistingGuestUserList = Get-AzureADUser -Filter "userType eq 'Guest'"
+$ExistingGuestUserList = Get-AzureADUser -All $true -Filter "userType eq 'Guest'"
 
 foreach($user in $userList){
     $displayName = "$($user.username)"
